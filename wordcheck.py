@@ -42,9 +42,6 @@ lang_name_set = ['Русский', 'Английский', 'Цифры']
 lang_score_s_set = ['ru-score-s.txt', 'en-score-s.txt', 'nl-score-s.txt']
 lang_score_m_set = ['ru-score-m.txt', 'en-score-m.txt', 'nl-score-m.txt']
 lang_text_set = ['ru-text.txt', 'en-text.txt', 'nl-text.txt']
-en = 'QWERTYUIOP{' + '''}ASDFGHJKL:"|ZXCVBNM<>qwertyuiop[]asdfghjkl;'\zxcvbnm,. !@#$%^&*()_+1234567890-=?/'''
-ru = 'ЙЦУКЕНГШЩЗХ' + '''ЪФЫВАПРОЛДЖЭЁЯЧСМИТЬБЮйцукенгшщзхъфывапролджэёячсмитьбю !"№%:,.;()_+1234567890-=?/'''
-
 
 def load_stats():
     global scoreboard, all_runs, speed_median, scoreboard_m, mistakes_median, speed_record
@@ -227,18 +224,18 @@ def main(myscreen):
         myscreen.addstr(2, 0, ' ' * x, curses.color_pair(2))
         myscreen.addstr(2, 0, out, curses.color_pair(2))
 
-        code = myscreen.getch()
+        code = myscreen.get_wch()
 
         if out == '':
             start_time = time.time()
 
-        if code == 27:
+        if code == '\x1b': # escape key
             break
 
-        elif code == 127:
+        elif code == '\x7f': # delete key
             out = out[:-1]
         
-        elif code == 260:
+        elif code == 260: # left arrow
             if lang > 0:
                 lang -= 1
 
@@ -249,7 +246,7 @@ def main(myscreen):
             open_text()
             load_stats()
             
-        elif code == 261:
+        elif code == 261: # right arrow
             if lang < 2:
                 lang += 1
 
@@ -262,13 +259,9 @@ def main(myscreen):
         
         else:
             try:
-                if lang == 1 or lang == 2:
-                    out += en[en.index(chr(code))]
+                out += code
 
-                else:
-                    out += ru[en.index(chr(code))]
-
-            except ValueError:
+            except TypeError:
                 pass
 
         if out == text[:len(out)]:
@@ -287,7 +280,7 @@ def main(myscreen):
                 all_mistakes_log.append(round(mistakes / (len(text) - 1) * 100, 2))
 
                 with open(lang_score_s_set[lang], 'a') as f:
-                    f.write(str(round(speed_keys / speed * 60, 2)) +'\n')
+                    f.write(str(round(speed_keys / speed * 60, 2)) + '\n')
                 f.close()
 
                 with open(lang_score_m_set[lang], 'a') as f:
@@ -332,7 +325,6 @@ def main(myscreen):
             color_error = 1
 
         myscreen.refresh()
-
 
 load_stats()
 open_text()
