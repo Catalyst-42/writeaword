@@ -232,7 +232,7 @@ def main(myscreen):
         if code == '\x1b': # escape key
             break
 
-        elif code == '\x7f': # delete key
+        elif code in ('KEY_BACKSPACE', chr(8), chr(127), chr(8998)): # delete key
             out = out[:-1]
         
         elif code == 260: # left arrow
