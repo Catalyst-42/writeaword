@@ -54,7 +54,7 @@ def load_stats():
     scoreboard_m = '|        Пусто       |'
 
     if os.path.exists(lang_score_s_set[lang]):
-        with open(lang_score_s_set[lang], 'r') as f:
+        with open(lang_score_s_set[lang], 'r', encoding="utf-8") as f:
             scoreboard = f.read().splitlines()
             all_runs = len(scoreboard)
             
@@ -84,7 +84,7 @@ def load_stats():
         f.close()
 
     if os.path.exists(lang_score_m_set[lang]):
-        with open(lang_score_m_set[lang], 'r') as f:
+        with open(lang_score_m_set[lang], 'r', encoding="utf-8") as f:
             scoreboard_m = f.read().splitlines()
 
             # all mistakes median
@@ -111,7 +111,7 @@ def open_text():
     global texts, text, lang_text_set, lang, line, now_line, local_line, j, x, i, line, out, mistakes
 
     if os.path.exists(lang_text_set[lang]):
-        with open(lang_text_set[lang], 'r') as f:
+        with open(lang_text_set[lang], 'r', encoding="utf-8") as f:
             texts = f.read().splitlines()
 
         f.close()
@@ -279,11 +279,11 @@ def main(myscreen):
                 all_speed_log.append(round(speed_keys / speed * 60, 2))
                 all_mistakes_log.append(round(mistakes / (len(text) - 1) * 100, 2))
 
-                with open(lang_score_s_set[lang], 'a') as f:
+                with open(lang_score_s_set[lang], 'a', encoding="utf-8") as f:
                     f.write(str(round(speed_keys / speed * 60, 2)) + '\n')
                 f.close()
 
-                with open(lang_score_m_set[lang], 'a') as f:
+                with open(lang_score_m_set[lang], 'a', encoding="utf-8") as f:
                     f.write(str(round(mistakes / (len(text) - 1) * 100, 2)) +' % \n')
                 f.close()
 
